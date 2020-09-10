@@ -107,7 +107,7 @@ raw_acc_signal_array = np.array(raw_acc_signal_value)
 ####################################################
 
 #Reading the Accelerometer data from MQTT 
-acc_raw_sig = pd.read_csv("F:/Project - Vibration/MOTOR DATA_JSW/ChartData_Excel_28070812338637_acc28.csv")
+acc_raw_sig = Data from Mqtt
 #Taking only the Accelerometer value
 raw_acc_signal_value = acc_raw_sig["Value"]
 #Converting the Accelerometer data into Array 
@@ -158,13 +158,13 @@ for m in partition:
     constrain_frequency = inst_freq.xs(m)
     constrain_freq.append(constrain_frequency)
 constrained_freq = pd.DataFrame(constrain_freq)
-
+#Considering only constrained frequencies
 fmax_if, Amplitude_if = constrained_freq.stack().index[np.argmax(constrained_freq.values)]
 
+#Constrained frequency values
 constrained_freq.idxmax(axis = 0)
 raw_acc_signal_value = raw_acc_signal_value.head(500)
-data_signal =pd.read_csv("F:/MQTT_Data/Signal.csv")
-data_df = data_signal['Signal']
+
 #Velocity Synchronous Discrete Fourier Transform
 def DFT_slow(x,N,n,k):
     M = np.exp(-2j * np.pi * k * n / N)
@@ -178,30 +178,23 @@ def DFT_slow(x,N,n,k):
     # return np.dot(M, x)
 VSDFT = DFT_slow(x,N,n,k)
 
-#Velocity Synchronous Discrete Fourier Transform
-# def DFT_slow(raw_acc_signal_array):
-#     """Compute the discrete Fourier Transform of the 1D array x"""
-#     x = np.asarray(x, dtype=float)
-#     N = x.shape[0]
-#     n = np.arange(N)
-#     k = n.reshape((N, 1))
-#     M = np.exp(-2j * np.pi * k * n / N)
-#     return np.dot(M, x)
-# #Velocity Synchronous Discrete Fourier Transform
-# VSDFT = DFT_slow(data_df)
-
 #Computing Inverse Discrete Fourier Transform
 t = np.arange(500)
+#Computing IDFT
 pseudo_angular_domain = np.fft.ifft(VSDFT)
+#Absolute values
 pseudo_ang_domain = pseudo_angular_domain.real
+#Plotting graph
 plt.plot(t, pseudo_angular_domain.real, 'b-', t, pseudo_angular_domain.imag, 'r--')
 plt.legend(('real', 'imaginary'))
 plt.show()
+#Converted the frequencies into angular domain
 specgram_df = list(pseudo_angle_order_map)
 data_specgram = pd.DataFrame(specgram_df, columns = ['a','b'])
 data_specgram_a = list(data_specgram.a)
 data_specgram_b = data_specgram.b
 tt = np.arange(500)
+#Plotting spectrogram 
 plt.pcolormesh(ff, tt, data_specgram_a, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [sec]')
@@ -242,16 +235,5 @@ print(difference)
 variability =  [abs(ele) for ele in difference] 
 Min_variability = min(variability)
 RPM = print(Min_variability)
-# Stop when J = fb[a,b] where fb[a,b] is the amount of frequency bins in [a,b]
-
-
-#Construct a finer partition and then repeat step three
-    
-#output reference shaft speed
-
-
-
-
-
 
 
