@@ -25,7 +25,7 @@ Tag_name=sensor_info["tag_name"]
 Tag_name2=sensor_info["tag_name2"]
 Window_size=int(sensor_info["windowsize"])
 power=int(userinfo2["p"])
-Power_range1=int(classinfo["power_range1"]) 
+Power_range1=int(classinfo["power_range1"])# the power ranges according to class are defined as per the iso standard
 Power_range2=int(classinfo["power_range2"]) 
 Power_range3=int(classinfo["power_range3"]) 
  
