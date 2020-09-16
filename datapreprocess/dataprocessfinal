@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Sep  8 11:10:48 2020
+
+@author: vegam
+"""
+import pandas as pd
+import numpy as np
+import time
+import paho.mqtt.client as mqtt
+from configparser import ConfigParser
+config_object = ConfigParser()
+config_object.read(r'/home/vegam/mendelesdata/mqttdatapreprocess.ini')
+config_object.read(r'F:\mendelesdata\mqttdatapreprocess.ini')
+userinfo2= config_object["user_info2"]
+serverinfo= config_object["server_config"]
+Broker_address=serverinfo["broker_address"]
+Broker_port=int(serverinfo["broker_port"])
+client = mqtt.Client()
+client.connect(Broker_address,Broker_port)
+list1=[]
+list2=[]
+new_list=[]
+sampling_frequency=1600.0
+milisecond=1000.0
+time_diff=float(milisecond/sampling_frequency)
+#print(time_diff)
+#df = pd.read_csv(r'C:\Users\ABC\OneDrive\Pictures\Screenshots\New folder\mendeleys.csv')
+df = pd.read_csv(r'/home/vegam/mendelesdata/mendeleys.csv')
+df['channel1'] = df['channel1'].astype(str)
+df['T'] = df['T'].astype(str)
+#print(df['channel1'].to_numpy(np.float64))
+v = df['channel1'].to_numpy() 
+#print (v)
+
+v1= df['T'].to_numpy() 
+#print (v1)
+
+new_list=[word + '$T$' for word in v]
+#print(new_list)
+
+res = [i + j for i, j in zip(new_list, v1)]
+# Result
+#print(res)
+str1 = ','.join(str(e) for e in res)
+#print(str1)
+for i in res:
+    time.sleep(time_diff)
+    print(i)    
+    client.publish("A123456789/ACC_X",i)
+
+    
+    
+    
+
+
+
