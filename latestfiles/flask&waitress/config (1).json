@@ -1,0 +1,21 @@
+{
+    "request_url": "http://192.168.2.72:8086/mssapi/metadatastore/getmetadata?token=966b167d1b7e46098ecfeb12990ddd07",
+    
+    "post_data" : {"category_ids" : "948",
+                        "limit" : "10000"},
+    "my_headers":{"Content-Type": "application/json"},
+    "posting_data" : {"UniqueName" : "sachin kr vish 2",
+                      "UniqueId"   : "",
+                      "key"        : [],
+                      "tag"        : [],
+                      "version"    : 0},
+
+    "keyName" : "NumberOfBalls_DE",
+    "tagName" : "DriveEndBearing"
+   
+
+
+}
+
+    
+    

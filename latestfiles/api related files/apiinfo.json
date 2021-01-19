@@ -1,0 +1,36 @@
+
+    {
+    
+    "id":"equpiment1",
+    "name":"equpiment_name",
+    "sensor":[
+    {
+        "macID":"sensor1_macID",
+        "x_axis_pos":"x",
+        "y_axis_pos":"y",
+        "z_axis_pos":"z"
+
+    },
+    {
+        "macID":"sensor1_macID",
+        "x_axis_pos":"x",
+        "y_axis_pos":"y",
+        "z_axis_pos":"z"
+
+    }
+
+    ],
+    "tags": [
+        {
+            "fftx": {"topic":"actualtopic","broker": "brokerObj"},
+            "ffty": {"topic":"actualtopic","broker": "brokerObj"},
+            "fftz": {"topic":"actualtopic","broker": "brokerObj"},
+            "output": {"topic":"actualtopic","broker":"brokeObj"}
+
+        }
+    ],
+    "operations":["gear","unbalance"]
+
+
+
+}
