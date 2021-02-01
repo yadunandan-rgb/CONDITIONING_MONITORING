@@ -67,13 +67,16 @@ class UnBalance:
 			loosenessrange = 10.3
 
 			# FFT rms threshold to differentiate good and bad data
-			fft_y=(np.array(self.fft_signal[0:N]))
-			fft_x = np.linspace(0.0, 1.0 / (2.0 * T), N)
+			fft_y=(np.array(self.fft_signal[0:N]))   # Amplitude axes of FFT
+			fft_x = np.linspace(0.0, 1.0 / (2.0 * T), N)  # Frequency axes of FFT
 			fft_rms_Ampl = np.sqrt(np.mean(np.square(fft_y)))
 
 			# Taking only those data which is above 1.2 times fft rms
-			fft_rms_index = [list(fft_y).index(i) for i in fft_y if i>1.2*fft_rms_Ampl ] #taking amplitude above 1.5*rms
+			fft_rms_index = [list(fft_y).index(i) for i in fft_y if i>1.2*fft_rms_Ampl ] #taking amplitude's index whose values are above 1.2*fft_rms_ampl
+			# Taking fft_amplitude values which are above rms threshold
 			fft_rms_values = [i for i in fft_y if i>1.2*fft_rms_Ampl]
+			# Below taking all frequency values which are above 1.2 times rms of fft values which is corresponding fft_rms_index where in
+			#fft_rms_index index of amplitude values are stored.
 			frequency_above_rms = [list(fft_x)[i] for i in fft_rms_index ]#if i<=maximum_rpm #frequency corres to 1.25*rms amplitudes
 			
 			# rpm
@@ -81,23 +84,32 @@ class UnBalance:
 
 			# Taking rpm 1x range to detect unbalance fault
 			rpm1xranage = [i for i in frequency_above_rms if start1x*self.rpmis<=i<=end1x*self.rpmis]
+			# Above rpm1xrange whatever amplitude values will come storing those values in "max1xrpmAmplitude" 
 			max1xrpmAmplitude = max([fft_rms_values[frequency_above_rms.index(i)] for i in rpm1xranage])
 			max1xrpmAmplitude = max1xrpmAmplitude
 
 			# Checking for multiple harmonics with 20%, from 2x to 10.5x checking harmonics corresponding to 1x harmonic
 			harmonic_allowance = 0.2
 			# harmonicsfrequ = [i for i in frequency_above_rms if ((finalRPM*2)-harmonic_allowance)<= i <= ((finalRPM*2)+harmonic_allowance) or ((finalRPM*2.5)-harmonic_allowance)<= i <= ((finalRPM*2.5)+harmonic_allowance) or ((finalRPM*3)-harmonic_allowance)<= i <= ((finalRPM*3)+harmonic_allowance) or ((finalRPM*3.5)-harmonic_allowance)<= i <= ((finalRPM*3.5)+harmonic_allowance) or ((finalRPM*4)-harmonic_allowance)<= i <= ((finalRPM*4)+harmonic_allowance) or ((finalRPM*4.5)-harmonic_allowance)<= i <= ((finalRPM*4.5)+harmonic_allowance) or ((finalRPM*5)-harmonic_allowance)<= i <= ((finalRPM*5)+harmonic_allowance) or ((finalRPM*5.5)-harmonic_allowance)<= i <= ((finalRPM*5.5)+harmonic_allowance) or ((finalRPM*6)-harmonic_allowance)<= i <= ((finalRPM*6)+harmonic_allowance) or ((finalRPM*6.5)-harmonic_allowance)<= i <= ((finalRPM*6.5)+harmonic_allowance) or ((finalRPM*7)-harmonic_allowance)<= i <= ((finalRPM*7)+harmonic_allowance) or ((finalRPM*7.5)-harmonic_allowance)<= i <= ((finalRPM*7.5)+harmonic_allowance) or ((finalRPM*8)-harmonic_allowance)<= i <= ((finalRPM*8)+harmonic_allowance) or ((finalRPM*8.5)-harmonic_allowance)<= i <= ((finalRPM*8.5)+harmonic_allowance) or ((finalRPM*9)-harmonic_allowance)<= i <= ((finalRPM*9)+harmonic_allowance) or ((finalRPM*9.5)-harmonic_allowance)<= i <= ((finalRPM*9.5)+harmonic_allowance) or ((finalRPM*10)-harmonic_allowance)<= i <= ((finalRPM*10)+harmonic_allowance) or ((finalRPM*10.5)-harmonic_allowance)<= i <= ((finalRPM*10.5)+harmonic_allowance)]
+			# In "harmonicsfrequ" will store frequency values present in multiple harmonics range
 			harmonicsfrequ = [i for i in frequency_above_rms if ((finalRPM*2)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*2)+(finalRPM*harmonic_allowance)) or ((finalRPM*2.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*2.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*3)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*3)+(finalRPM*harmonic_allowance)) or ((finalRPM*3.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*3.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*4)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*4)+(finalRPM*harmonic_allowance)) or ((finalRPM*4.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*4.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*5)+(finalRPM*harmonic_allowance)) or ((finalRPM*5.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*5.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*6)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*6)+(finalRPM*harmonic_allowance)) or ((finalRPM*6.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*6.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*7)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*7)+(finalRPM*harmonic_allowance)) or ((finalRPM*7.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*7.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*8)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*8)+(finalRPM*harmonic_allowance)) or ((finalRPM*8.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*8.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*9)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*9)+(finalRPM*harmonic_allowance)) or ((finalRPM*9.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*9.5)+(finalRPM*harmonic_allowance)) or ((finalRPM*10)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*10)+(finalRPM*harmonic_allowance)) or ((finalRPM*10.5)-(finalRPM*harmonic_allowance))<= i <= ((finalRPM*10.5)+(finalRPM*harmonic_allowance))]
+			# Corresponding to "harmonicsfrequ" taking all amplitude values in "harmonicAmpli"
 			harmonicAmpli = [fft_rms_values[frequency_above_rms.index(i)] for i in harmonicsfrequ ]
 			
 			# Considering harmonics above 40% of 1x harmonics to detect other faults
 			harmonicAmplituAbove40percent1x = [i for i in harmonicAmpli if i>0.4*max1xrpmAmplitude]
+			# "onepoint8to10point2freq" here getting all frequency values present in looseness range that is 1.8*rpm to 10.5*rpm
 			onepoint8to10point2freq = [i for i in frequency_above_rms if end1x*finalRPM<=i<=loosenessrange*finalRPM]
+			# Taking all amplitude values corresponding to "onepoint8to10point2freq"
 			amplitude_corres_frequency10Point2 = [fft_rms_values[frequency_above_rms.index(i)] for i in onepoint8to10point2freq]
+			#If there are multiple harmonics from 1.8*rpm to 10.5*rpm then it won't be Unbalance it can be other faults like Misalignment or looseness
+			#so checking for all amplitudes corres to frequencies. In "amplitud40PercentAbove" saving all amplitude values above 40% of 1*rpm's amplitude
 			amplitud40PercentAbove = [i for i in amplitude_corres_frequency10Point2 if i>0.4*max1xrpmAmplitude]
+			#Corresponding to "amplitud40PercentAbove" taking frequency values
 			freqonepoint2to10point2 = [frequency_above_rms[amplitud40PercentAbove.index(i)] for i in amplitud40PercentAbove]
 			
 			# Returning faults with respect to their condition
+			# If "harmonicAmplituAbove40percent1x" is not empty means there are some amplitude values present which are greter than 1x rpm's amplitude.
 			if harmonicAmplituAbove40percent1x!=[]:
 				result = 2
 				# print(result)
