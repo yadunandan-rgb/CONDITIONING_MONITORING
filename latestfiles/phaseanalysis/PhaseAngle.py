@@ -38,14 +38,16 @@ from collections import Counter
 from configparser import ConfigParser
 
 
-
+# Main reference for Phase finding code: https://stackoverflow.com/questions/2827393/angles-between-two-n-dimensional-vectors-in-python
 
 class Angle:
 	def __init__(self,horizontAccelData, verticalAccelData):
 		self.df1 = horizontAccelData
 		self.df2 = verticalAccelData
 
+# In "c" storing dot product of 2 accelerometer signals : cosine of the angle
 
+# "angle" : if you really want the angle
 
 	def angleis(self):
 		try:
